@@ -4,7 +4,8 @@
 
 Calculate Touschek and Gas life time applying noise on the beam
 '''
-import scipy.optimize
+from .exp_fit import scaled_exp
+from scipy.optimize import curve_fit
 import numpy as np
 
 
@@ -14,7 +15,8 @@ def lifetime_function_orig(u, a, b, c):
     Warning:
         Do not use it! Use :func:`lifetime_function` instead
     """
-    return  1/(1/np.sqrt(b**2 + c**2*u**2) + 1/a)
+    return 1/(1/np.sqrt(b**2 + c**2*u**2) + 1/a)
+
 
 def _calculate_touschek2(u, b, c):
     r"""Calculate the *square* touschek lifetime
@@ -27,6 +29,7 @@ def _calculate_touschek2(u, b, c):
     tau_touschek2 = b2 + us**2
     return tau_touschek2
 
+
 def calculate_touschek(*args):
     """Calculate the touschek lifetime
 
@@ -35,6 +38,7 @@ def calculate_touschek(*args):
     tau_touschek2 = _calculate_touschek2(*args)
     result = np.sqrt(tau_touschek2)
     return result
+
 
 def _liftime_function_physics(tauG, tau_touschek):
     r"""Calculate lifetime from gas and touschek life time
@@ -51,6 +55,7 @@ def _liftime_function_physics(tauG, tau_touschek):
     devisor = 1 + tauGs
     result = tauG / devisor
     return result
+
 
 def lifetime_function(u, tauG, b, c):
     r"""Calculate the life time depending on
@@ -101,6 +106,7 @@ def lifetime_function(u, tauG, b, c):
     result = _liftime_function_physics(tauG, tau_touschek)
     return result
 
+
 def lifetime_function_fdf(u, tauG, b, c):
     """Derivatives of the lifetime function
 
@@ -123,9 +129,10 @@ def lifetime_function_fdf(u, tauG, b, c):
     df_db = df_tmp * b
     df_dc = df_tmp * c * u**2
 
-    result = np.array((df_dtauG, df_db, df_dc), order = "F")
+    result = np.array((df_dtauG, df_db, df_dc), order="F")
     result = np.transpose(result)
     return tau, result
+
 
 def lifetime_function_df(u, tauG, b, c):
     """Derivatives of the lifrtime function
@@ -137,18 +144,21 @@ def lifetime_function_df(u, tauG, b, c):
     f, dtau = lifetime_function_fdf(u, tauG, b, c)
     return dtau
 
-_curve_fit = scipy.optimize.curve_fit
-def calculate_lifetime_parameters(noise_level, life_time, start_parameters = None):
+
+def calculate_lifetime_parameters(noise_level, life_time,
+                                  start_parameters=None):
     """Calculate the Touschek and Gas lifetime from noise measurement and t
     life time  measurements
 
     Uses :func:`scipy.optimize.curve_fit` to fit the
-    function :func:`lifetime_function` to the set noise level and measured life time
+    function :func:`lifetime_function` to the set noise level and measured
+    life time
 
     Args:
         noise_level : the noise level that was used on the beam (unit? )
         life_time   : the measured life time (i.e. the current decay?)
-        start_parameters (optional, None) : the start parameters to use in the function
+        start_parameters (optional, None) : the start parameters to use in the
+                                            function
 
     Uses
         * :func:`scipy.optimize.curve_fit` for fit rotine
@@ -158,18 +168,16 @@ def calculate_lifetime_parameters(noise_level, life_time, start_parameters = Non
         start_parameters = [8.0, 3.0, 5.0]
     start_parameters = np.asarray(start_parameters)
 
-    l = len(start_parameters)
-    assert(l == 3)
+    np = len(start_parameters)
+    assert(np == 3)
 
-    c, cov = _curve_fit(lifetime_function, noise_level, life_time, p0=start_parameters,
-                        method="lm",
-                        jac =lifetime_function_df)
+    c, cov = curve_fit(lifetime_function, noise_level, life_time,
+                       p0=start_parameters, method="lm",
+                       jac=lifetime_function_df)
 
     tmp = np.diag(cov)
     err = np.sqrt(tmp)
-    return  c, cov, err
-
-
+    return c, cov, err
 
 
 def beam_decay(t, u, c0, tauG, b, c, offset):
@@ -192,6 +200,7 @@ def beam_decay(t, u, c0, tauG, b, c, offset):
     y = scaled_exp(t, c0, -tau) + offset
     return y
 
+
 def beam_decay_fsdf(t, u, c0, tauG, b, c, offset):
     """Calculate beam decay current at its derivatives
 
@@ -207,22 +216,24 @@ def beam_decay_fsdf(t, u, c0, tauG, b, c, offset):
     tau = np.sqrt(tau2)
     ys = scaled_exp(t, 1, tau)
 
-    l = len(u)
-    df = np.zeros((l,5), np.float_)
+    nu = len(u)
+    df = np.zeros((nu, 5), np.float_)
 
     # Derviatives with respect to calculate_lifetime
-    df_scale =  -c0 * t / tau2 * ys
-    tmp = dtau * df_scale[:,np.newaxis]
-    df[:,0] = ys
-    df[:,1:4] = tmp
-    df[:,4] = 1
+    df_scale = -c0 * t / tau2 * ys
+    tmp = dtau * df_scale[:, np.newaxis]
+    df[:, 0] = ys
+    df[:, 1:4] = tmp
+    df[:, 4] = 1
 
     return ys, df
+
 
 def beam_decay_fdf(t, u, c0, tauG, b, c, offset):
     fs, df = beam_decay_fsdf(t, u, c0, tauG, b, c, offset)
     f = fs * c
     return f, df
+
 
 def beam_decay_df(t, u, c0, tauG, b, c, offset):
     """Calculate beam decay derivatives
