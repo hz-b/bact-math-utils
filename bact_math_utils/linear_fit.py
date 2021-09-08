@@ -9,8 +9,10 @@ Similar functionality is provided by
 from scipy import linalg
 import numpy as np
 
+__all__ = ['x_to_cov', 'cov_to_std', 'linear_fit_1d']
 
-def x_to_cov(X: np.ndarray, residuals: float, N: int, p: int):
+
+def x_to_cov(X: np.ndarray, residuals: float, N: int, p: int) -> np.ndarray:
     '''compute the covariance for a linear regression
 
     The linear regression could be computed e.g. by :func:`scipy.linalg.lstsq`
@@ -44,7 +46,7 @@ def cov_to_std(cov: np.ndarray) -> np.ndarray:
     return std
 
 
-def linear_fit_1d(x: np.ndarray, y: np.ndarray):
+def linear_fit_1d(x: np.ndarray, y: np.ndarray) -> (np.ndarray, np.ndarray):
     '''fit a line and estimate the accuracy of the parameters
     '''
     N = len(x)
