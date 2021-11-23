@@ -69,7 +69,7 @@ def to_momentum(freq, *, ref_freq, alpha):
 
     """
     df = freq - ref_freq
-    tmp = df / (fr * alpha)
+    tmp = df / (freq * alpha)
     delta = -tmp
     return delta
 

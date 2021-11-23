@@ -27,20 +27,27 @@ class testTune(unittest.TestCase):
     def test04_dQ(self):
         """BESSY II: muxer applied to Q1M1D1R"""
         dQ = tune.working_point_change(0.01 * 2, 10, length=0.25)
-        self.assertAlmostEqual(dQ, 0.1 /(8 * np.pi), places=6)
+        self.assertAlmostEqual(dQ, 0.1 / (8 * np.pi), places=6)
 
     def test10_dT(self):
-        """Close to BESSY 2 real usage: Q1M1D1R x
-        """
+        """Close to BESSY 2 real usage: Q1M1D1R x"""
         dT = tune.tune_change(0.01 * 2, beta=15, length=0.25, f=500e6, nb=400)
-        self.assertAlmostEqual(dT, 3/2 * 2/ 4 * 0.1 /(4 * np.pi) * 500e6/400)
+        self.assertAlmostEqual(dT, 3 / 2 * 2 / 4 * 0.1 / (4 * np.pi) * 500e6 / 400)
 
     def test11_dT(self):
-        """Close to BESSY 2 real usage: Q1M1D1R y
-        """
+        """Close to BESSY 2 real usage: Q1M1D1R y"""
         dT = tune.tune_change(0.01 * 2, beta=10, length=0.25, f=500e6, nb=400)
-        self.assertAlmostEqual(dT, 2/4 * 0.1 /(4 * np.pi) * 500e6/400)
+        self.assertAlmostEqual(dT, 2 / 4 * 0.1 / (4 * np.pi) * 500e6 / 400)
+
+    def test_momentum(self):
+        """For BESSSY II momentum compaction factor"""
+        ref_freq = 499620
+        freq = ref_freq + 3.5
+        alpha = 7.3e-4
+        momentum_check = - (freq - ref_freq)/(freq * alpha)
+        momentum = tune.to_momentum(freq, ref_freq=ref_freq, alpha=alpha)
+        self.assertAlmostEqual(momentum, momentum_check)
 
 
 if __name__ == "__main__":
-    unitest.main()
+    unittest.main()
