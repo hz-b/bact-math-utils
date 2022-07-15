@@ -80,6 +80,33 @@ class EnumerateUniqueJustSeen:
                 yield self.cnt, item
 
 
+class CountSame:
+    """Enumerate how long the same value is seen
+
+    Follows :func:`enumerate` API
+
+    Warning:
+        Internally it uses '==' comparisons. So if using float values
+        it can be good to scale the values and cast them to integers
+        before using this class.
+
+          value None will be considered as never seen
+    """
+
+    def __init__(self):
+        self.last_item = None
+        self.counter = None
+
+    def __call__(self, iterable):
+        for item in iterable:
+            if item != self.last_item:
+                self.counter = itertools.count()
+                self.last_item = item
+
+            assert self.counter is not None
+            yield next(self.counter), item
+
+
 def enumerate_changed_value(values: Sequence) -> list:
     """Emit a new number every time the value changes
 
@@ -114,6 +141,7 @@ def enumerate_changed_value_pairs(val1: Sequence, val2: Sequence) -> list:
 
 
 __all__ = [
+    "CountSame",
     "EnumerateUniqueEverSeen",
     "EnumerateUniqueJustSeen",
     "enumerate_changed_value",
