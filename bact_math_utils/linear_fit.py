@@ -48,6 +48,16 @@ def cov_to_std(cov: np.ndarray) -> np.ndarray:
 
 def linear_fit_1d(x: np.ndarray, y: np.ndarray) -> (np.ndarray, np.ndarray):
     '''fit a line and estimate the accuracy of the parameters
+
+    Args:
+        x: independent
+        y: dependent
+
+    Fits slope and intercept to the data
+
+    Returns: (p, dp)
+
+
     '''
     N = len(x)
     X = np.ones((N, 2), np.float_)

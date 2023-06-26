@@ -4,8 +4,7 @@ import numpy as np
 
 
 def compute_cov(x):
-    '''Compute covariance for linear fit with independent x
-    '''
+    """Compute covariance for linear fit with independent x"""
     N = len(x)
     X = np.ones((N, 2), np.float_)
     X[:, 0] = x
@@ -18,19 +17,17 @@ def compute_cov(x):
 
 
 class Test00_Trivia(unittest.TestCase):
-    '''But still good to check
-    '''
+    """But still good to check"""
+
     def test00_cov_to_std(self):
-        '''Covariance : null matrix
-        '''
+        """Covariance : null matrix"""
         cov = np.zeros((2, 2))
         std = linear_fit.cov_to_std(cov)
         self.assertAlmostEqual(std[0], 0)
         self.assertAlmostEqual(std[1], 0)
 
     def test01_cov_to_std(self):
-        '''Covariance : diagonal 1
-        '''
+        """Covariance : diagonal 1"""
         cov = np.zeros((2, 2))
         idx = np.arange(2)
         cov[idx, idx] = 1
@@ -40,8 +37,7 @@ class Test00_Trivia(unittest.TestCase):
         self.assertAlmostEqual(std[1], 1)
 
     def test02_cov_to_std(self):
-        '''Covariance : diagonal 4, 9
-        '''
+        """Covariance : diagonal 4, 9"""
         cov = np.zeros((2, 2))
         cov[0, 0] = 4
         cov[1, 1] = 9
@@ -51,8 +47,7 @@ class Test00_Trivia(unittest.TestCase):
         self.assertAlmostEqual(std[1], 3)
 
     def test03_cov_to_std(self):
-        '''Covariance: off diagonal elements set
-        '''
+        """Covariance: off diagonal elements set"""
         cov = np.zeros((2, 2))
         cov[0, 1] = 4
         cov[1, 0] = 9
@@ -63,8 +58,8 @@ class Test00_Trivia(unittest.TestCase):
 
 
 class _TestLineFit(unittest.TestCase):
-    '''Commons for testing line fit
-    '''
+    """Commons for testing line fit"""
+
     x = None
     y = None
 
@@ -76,24 +71,24 @@ class _TestLineFit(unittest.TestCase):
     p_err = None
 
     def setUp(self):
-        assert(self.x is not None)
-        assert(self.y is not None)
+        assert self.x is not None
+        assert self.y is not None
 
-        assert(self.cov00 is not None)
-        assert(self.cov01 is not None)
-        assert(self.cov11 is not None)
+        assert self.cov00 is not None
+        assert self.cov01 is not None
+        assert self.cov11 is not None
 
-        assert(self.p is not None)
-        assert(self.p_err is not None)
+        assert self.p is not None
+        assert self.p_err is not None
 
     def computeCov(self):
         return compute_cov(self.x)
 
     def checkCov(self, cov00, cov01, cov11, cov):
-        self.assertAlmostEqual(cov[0, 0],  cov00)
-        self.assertAlmostEqual(cov[0, 1],  cov01)
-        self.assertAlmostEqual(cov[1, 0],  cov01)
-        self.assertAlmostEqual(cov[1, 1],  cov11)
+        self.assertAlmostEqual(cov[0, 0], cov00)
+        self.assertAlmostEqual(cov[0, 1], cov01)
+        self.assertAlmostEqual(cov[1, 0], cov01)
+        self.assertAlmostEqual(cov[1, 1], cov11)
 
     def computeCheckCov(self, cov00, cov01, cov11):
         cov = self.computeCov()
@@ -116,52 +111,51 @@ class _TestLineFit(unittest.TestCase):
 
 
 class Test01_ZeroSlope(_TestLineFit):
-    '''Line identical to x axis
-    '''
+    """Line identical to x axis"""
 
     x = [0, 1, 2]
     y = [0, 0, 0]
 
-    cov00 = 1/2
-    cov01 = -1/2
-    cov11 = 1 - 1/(2*3)
+    cov00 = 1 / 2
+    cov01 = -1 / 2
+    cov11 = 1 - 1 / (2 * 3)
 
     p = [0, 0]
     p_err = [0, 0]
 
 
 class Test02_Slope1(Test01_ZeroSlope):
-    '''Line with slope one
-    '''
+    """Line with slope one"""
+
     y = [0, 1, 2]
     p = [1, 0]
 
 
 class Test03_IdealLine(_TestLineFit):
-    '''Line with slope 3 and intercept 7
-    '''
+    """Line with slope 3 and intercept 7"""
+
     x = [-1, 5, 3]
     y = np.array([-3, 15, 9]) + 7
 
     cov00 = 3 / (7 * 8)
-    cov01 = - 1 / 8
-    cov11 = 5**4 / 1000
+    cov01 = -1 / 8
+    cov11 = 5 ** 4 / 1000
 
     p = [3, 7]
     p_err = [0, 0]
 
 
 class Test03_IdealLineWithNoise(Test03_IdealLine):
-    '''Line with slope 3 and intercept 7
-    '''
+    """Line with slope 3 and intercept 7"""
+
     p_err = [0.02, 0.068]
 
     def setUp(self):
-        '''with determenistic noise
+        """with determenistic noise
 
         Double points so that fit parameter are the smae as for
         the central line
-        '''
+        """
         super().setUp()
         x = self.x
         y = self.y
@@ -170,14 +164,14 @@ class Test03_IdealLineWithNoise(Test03_IdealLine):
         self.x = x
 
         # Add determenistic noise
-        offset = .1
+        offset = 0.1
         off = np.ones(len(self.y)) * offset
         off = np.concatenate([off, -off])
         self.y = y + off
 
-        self.cov00 = 1/8 * self.cov00
-        self.cov01 = 1/8 * self.cov01
-        self.cov11 = 1/8 * self.cov11
+        self.cov00 = 1 / 8 * self.cov00
+        self.cov01 = 1 / 8 * self.cov01
+        self.cov11 = 1 / 8 * self.cov11
 
     def test01_fit(self):
         p, p_err = linear_fit.linear_fit_1d(self.x, self.y)
@@ -189,5 +183,5 @@ class Test03_IdealLineWithNoise(Test03_IdealLine):
 
 del _TestLineFit
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
