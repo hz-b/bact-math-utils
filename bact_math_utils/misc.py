@@ -13,7 +13,7 @@ as an unique entry.
 """
 import itertools
 from collections import OrderedDict
-from typing import Sequence
+from typing import Iterator, Sequence
 
 
 class EnumerateUniqueEverSeen:
@@ -111,6 +111,35 @@ def enumerate_changed_value_pairs(val1: Sequence, val2: Sequence) -> list:
         Does not check both sequences are of equal length
     """
     return enumerate_changed_value_tuple((val1, val2))
+
+
+def exhaust_and_add_if_required(seq: Sequence, *, prefix) -> Iterator:
+    """Make a iterator of the given sequence, use prefix for filling up
+
+    Warning:
+        Unchecked function, use with care
+
+    Args:
+        seq: a sequence
+        prefix: prefix to use for remaining arguments if required
+
+    Similar and inspired to :func:`itertools.zip_longest`
+
+    Yields item by item from the sequence. If further items are
+    requested, the prefix is used to generate new items. It uses
+    internally a counter. This counter is converted to the string
+    and added to the prefix.
+
+    Useful to be used to zip two sequences but contary to
+    :func:`itertools.zip_longest`  a constant value is not
+    sufficient. E.g. you need to add a label to each item in an
+    other sequence
+    """
+    for s in seq:
+        yield s
+        counter = itertools.count()
+        for cnt in counter:
+            yield prefix + str(cnt)
 
 
 __all__ = [
