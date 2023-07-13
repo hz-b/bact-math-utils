@@ -82,6 +82,15 @@ def closed_orbit_distortion(
     Returns:
         closed orbit distortion
 
+    Computes the orbit distortion along the ring using the approximation of a small kicker.
+    Todo:
+        check the statement on Floquet coordinates
+
+    Please note:
+        * tune: working point of the machine in Floquet coordinates
+        * phase propagation :math:`\mu, \mu_i` are given in :math:`2 \cdot \pi`
+          Floquet coordinates
+
     .. math::
 
         \frac{\sqrt{\beta(s)}}{2 \sin{\left(\pi Q\right)}}\cdot closed\_orbit\_kick
@@ -97,7 +106,6 @@ def closed_orbit_distortion(
             \pi Q -
                   \left|\mu_i - \mu(s) \right|
          \right)}
-
 
     """
     devisor = 2.0 * np.sin(tune * np.pi)

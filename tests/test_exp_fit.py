@@ -107,7 +107,7 @@ class _FitFunc:
         self.assertAlmostEqual(tau_f, tau)
 
 
-class _TestCases_FitScaledExponent(unittest.TestCase):
+class _TestCases_FitScaledExponent(unittest.TestCase, _FitFunc):
     def test1(self):
         """ tau = 1, c = 1
         """
