@@ -168,8 +168,8 @@ def calculate_lifetime_parameters(noise_level, life_time,
         start_parameters = [8.0, 3.0, 5.0]
     start_parameters = np.asarray(start_parameters)
 
-    np = len(start_parameters)
-    assert(np == 3)
+    npar = len(start_parameters)
+    assert(npar == 3)
 
     c, cov = curve_fit(lifetime_function, noise_level, life_time,
                        p0=start_parameters, method="lm",
