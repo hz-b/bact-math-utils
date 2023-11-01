@@ -32,7 +32,7 @@ def estimate_tau_inv(indep, dep):
 
 
 def scaled_exp(t, c, tau, b=None, t0=None):
-    """Calculate a scaled exponential
+    r"""Calculate a scaled exponential
 
     Well, used for the fit functions ...
 
@@ -104,7 +104,7 @@ def scaled_exp_df(t, c0, tau,  b=None, t0=None):
 
 
 def fit_scaled_exp(t, y, p0=None):
-    """Fit a decay function to the measured current
+    r"""Fit a decay function to the measured current
 
     Args:
         t : independent variable (typically time)
