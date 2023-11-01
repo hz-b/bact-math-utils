@@ -5,7 +5,7 @@ _4pi = 1.0 / (4 * np.pi)
 
 
 def working_point_change(dk: float, beta: float, *, length=1) -> float:
-    """Use betatron function to predict tune change
+    r"""Use betatron function to predict tune change
 
     Args:
         dk:     the quadrupole strength change dk
@@ -27,7 +27,7 @@ def working_point_change(dk: float, beta: float, *, length=1) -> float:
 def tune_change(
     dk: float, beta: float, *, length: float = 1, f: float, nb: int
 ) -> float:
-    """Use betatron function to predict tune change
+    r"""Use betatron function to predict tune change
 
     Args:
         dk:     quadrupole strength change (normalised to dipole strength)
