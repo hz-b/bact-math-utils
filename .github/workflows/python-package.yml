@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ "3.11" ] # [ "3.9", "3.10", "3.11"]
+        python-version: [ "3.9", "3.10", "3.11" ]
 
     steps:
     - uses: actions/checkout@v4
@@ -24,16 +24,16 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-        # cache: 'pip'
-        # cache-dependency-path: |
-        #    **/setup.cfg
-        #   **/requirements*.txt
+        cache: 'pip'
+        cache-dependency-path: |
+           **/setup.cfg
+           **/requirements*.txt
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        # need to add that? 
+        # need to add that? ... seems so 
         pip install .
     - name: Lint with flake8
       run: |
