@@ -52,6 +52,7 @@ def closed_orbit_kick(
     Returns: kick scaled by sqrt of beta and angle
 
     .. math::
+
         \\sqrt{\\beta_i}  \\vartheta_i \\cdot closed\\_orbit\\_kick\\_unscaled
     """
     cou = closed_orbit_kick_unscaled(mu, tune=tune, mu_i=mu_i)

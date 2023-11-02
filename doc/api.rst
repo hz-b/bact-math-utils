@@ -10,6 +10,15 @@ Exponential fit
     :show-inheritance:
 
 
+Linear fit utils
+-----------------
+
+.. automodule:: bact_math_utils.linear_fit
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+       
 Life time
 ---------
 
@@ -17,3 +26,32 @@ Life time
     :members:
     :undoc-members:
     :show-inheritance:
+
+       
+
+Distorted orbit
+---------------
+.. automodule:: bact_math_utils.distorted_orbit
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+       
+Tune utils
+----------
+.. automodule:: bact_math_utils.tune
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Misc
+----
+
+Or non numeric convienience functions
+
+.. automodule:: bact_math_utils.misc
+    :members:
+    :undoc-members:
+    :show-inheritance:
+              
