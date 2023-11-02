@@ -1,9 +1,9 @@
-'''
+"""
 
 @author: Pierre Schnizer
 
 Calculate Touschek and Gas life time applying noise on the beam
-'''
+"""
 from .exp_fit import scaled_exp
 from scipy.optimize import curve_fit
 import numpy as np
@@ -15,7 +15,7 @@ def lifetime_function_orig(u, a, b, c):
     Warning:
         Do not use it! Use :func:`lifetime_function` instead
     """
-    return 1/(1/np.sqrt(b**2 + c**2*u**2) + 1/a)
+    return 1 / (1 / np.sqrt(b ** 2 + c ** 2 * u ** 2) + 1 / a)
 
 
 def _calculate_touschek2(u, b, c):
@@ -24,9 +24,9 @@ def _calculate_touschek2(u, b, c):
     .. math::
         \tau_{Touschek}^2 = b^2 + (c u)^2
     """
-    b2 = b*b
+    b2 = b * b
     us = c * u
-    tau_touschek2 = b2 + us**2
+    tau_touschek2 = b2 + us ** 2
     return tau_touschek2
 
 
@@ -114,12 +114,12 @@ def lifetime_function_fdf(u, tauG, b, c):
     For details see :func:`calculate_lifetime_parameters` and
     :func:`lifetime_function`
     """
-    tauG2 = tauG**2
+    tauG2 = tauG ** 2
 
     tau_touschek2 = _calculate_touschek2(u, b, c)
     tau_touschek = np.sqrt(tau_touschek2)
     tau = _liftime_function_physics(tauG, tau_touschek)
-    tau2 = tau**2
+    tau2 = tau ** 2
 
     df_dtauG = tau2 / tauG2
 
@@ -127,7 +127,7 @@ def lifetime_function_fdf(u, tauG, b, c):
     df_tmp = tau2 / devisor
 
     df_db = df_tmp * b
-    df_dc = df_tmp * c * u**2
+    df_dc = df_tmp * c * u ** 2
 
     result = np.array((df_dtauG, df_db, df_dc), order="F")
     result = np.transpose(result)
@@ -145,8 +145,7 @@ def lifetime_function_df(u, tauG, b, c):
     return dtau
 
 
-def calculate_lifetime_parameters(noise_level, life_time,
-                                  start_parameters=None):
+def calculate_lifetime_parameters(noise_level, life_time, start_parameters=None):
     """Calculate the Touschek and Gas lifetime from noise measurement and t
     life time  measurements
 
@@ -169,11 +168,16 @@ def calculate_lifetime_parameters(noise_level, life_time,
     start_parameters = np.asarray(start_parameters)
 
     npar = len(start_parameters)
-    assert(npar == 3)
+    assert npar == 3
 
-    c, cov = curve_fit(lifetime_function, noise_level, life_time,
-                       p0=start_parameters, method="lm",
-                       jac=lifetime_function_df)
+    c, cov = curve_fit(
+        lifetime_function,
+        noise_level,
+        life_time,
+        p0=start_parameters,
+        method="lm",
+        jac=lifetime_function_df,
+    )
 
     tmp = np.diag(cov)
     err = np.sqrt(tmp)

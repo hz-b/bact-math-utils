@@ -1,12 +1,12 @@
-'''Fit an exponential to an decay
+"""Fit an exponential to an decay
 
 with a twist towards real world measurement data
-'''
+"""
 import numpy as np
 from scipy.optimize import curve_fit
 import logging
 
-logger = logging.getLogger('bact_math_utils')
+logger = logging.getLogger("bact_math_utils")
 
 
 def estimate_tau_inv(indep, dep):
@@ -45,19 +45,19 @@ def scaled_exp(t, c, tau, b=None, t0=None):
 
     dt = t
     if t0 is not None:
-        logger.debug('scale_exp: using t0 of %s', t0)
+        logger.debug("scale_exp: using t0 of %s", t0)
         dt = t - t0
 
     ts = dt / tau
     scale = np.exp(ts)
     y = c * scale
     if b is not None:
-        logger.debug('scaled_exp: using b of %s', b)
+        logger.debug("scaled_exp: using b of %s", b)
         y = y + b
     return y
 
 
-def scaled_exp_df(t, c0, tau,  b=None, t0=None):
+def scaled_exp_df(t, c0, tau, b=None, t0=None):
     r"""
     Derivatives:
 
@@ -69,8 +69,8 @@ def scaled_exp_df(t, c0, tau,  b=None, t0=None):
                                    \left(t - t_{0}\right)
 
     """
-    logger.debug('scaled_exp_df: extra parameters b=%s t0=%s', b, t0)
-    tau_inv = 1./tau
+    logger.debug("scaled_exp_df: extra parameters b=%s t0=%s", b, t0)
+    tau_inv = 1.0 / tau
 
     dt = t
     if t0 is not None:
@@ -86,7 +86,7 @@ def scaled_exp_df(t, c0, tau,  b=None, t0=None):
     df_dtau = c0_eterm * dt
 
     # Should it not be that
-    df_dtau = - df_dtau * tau_inv**2
+    df_dtau = -df_dtau * tau_inv ** 2
 
     dfs = [df_c0, df_dtau]
 
@@ -95,7 +95,7 @@ def scaled_exp_df(t, c0, tau,  b=None, t0=None):
         dfs.append(df_db)
 
     if t0 is not None:
-        df_t0 = - tau_inv * c0_eterm
+        df_t0 = -tau_inv * c0_eterm
         dfs.append(df_t0)
 
     df = np.array(dfs)
@@ -115,7 +115,7 @@ def fit_scaled_exp(t, y, p0=None):
 
     .. math::
 
-        y = c_0  e^{- \\frac{t}{\\tau}}
+        y = c_0  e^{- \frac{t}{\tau}}
 
     using its derivatives.
 
@@ -131,12 +131,11 @@ def fit_scaled_exp(t, y, p0=None):
 
     if p0 is None:
         c0, tau_inv = estimate_tau_inv(t, y)
-        tau0 = 1./tau_inv
+        tau0 = 1.0 / tau_inv
     else:
         c0, tau0 = p0
 
-    c, cov = curve_fit(scaled_exp, t, y,  p0=(c0, tau0),
-                       jac=scaled_exp_df)
+    c, cov = curve_fit(scaled_exp, t, y, p0=(c0, tau0), jac=scaled_exp_df)
     tmp = np.diag(cov)
     err = np.sqrt(tmp)
     return c, cov, err
@@ -197,9 +196,9 @@ def fit_scaled_exp_offset(t, y, *, p0=None, b=None, t0=None):
         # just describing a parameter b
         b = 0
         if len(remaining):
-            tmp, = remaining
+            (tmp,) = remaining
             if b is not None:
-                txt = 'parameter b specified in p0 and as argument'
+                txt = "parameter b specified in p0 and as argument"
                 raise AssertionError(txt)
             b = tmp
     else:
@@ -207,21 +206,19 @@ def fit_scaled_exp_offset(t, y, *, p0=None, b=None, t0=None):
             b = 0
             y_min = y.min()
             if y_min < _eps:
-                b = - y_min + _eps
+                b = -y_min + _eps
                 yt = y + b
         c0, tau_inv = estimate_tau_inv(t, yt)
-        tau0 = 1./tau_inv
+        tau0 = 1.0 / tau_inv
 
-    txt = 'fit_scaled_exp_offset: starting with parameters'
-    txt += ' c0 = %s, tau0 = %s, b = %s'
+    txt = "fit_scaled_exp_offset: starting with parameters"
+    txt += " c0 = %s, tau0 = %s, b = %s"
     logger.debug(txt, c0, tau0, b)
 
-    c, cov = curve_fit(scaled_exp, t, y,  p0=(c0, tau0, b),
-                       jac=scaled_exp_df)
+    c, cov = curve_fit(scaled_exp, t, y, p0=(c0, tau0, b), jac=scaled_exp_df)
     tmp = np.diag(cov)
     err = np.sqrt(tmp)
     return c, cov, err
 
 
-__all__ = ['fit_scaled_exp', 'fit_scaled_exp_offset', 'estimate_tau_inv',
-           'scaled_exp']
+__all__ = ["fit_scaled_exp", "fit_scaled_exp_offset", "estimate_tau_inv", "scaled_exp"]

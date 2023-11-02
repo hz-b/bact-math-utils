@@ -47,7 +47,7 @@ def closed_orbit_kick(
         tune:   working point
         mu_i:   phase propagation of kicker
         beta_i: beta at the kicker
-        theta_: kicker aangle
+        theta_i: kicker aangle
 
     Returns: kick scaled by sqrt of beta and angle
 
