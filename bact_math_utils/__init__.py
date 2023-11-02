@@ -1,3 +1,3 @@
-'''
-'''
-__all__ = ['exp_fit', 'life_time', 'distorted_oribt', 'linear_fit', 'misc']
+"""
+"""
+__all__ = ["exp_fit", "life_time", "distorted_orbit", "linear_fit", "misc"]
