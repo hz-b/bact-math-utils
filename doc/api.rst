@@ -18,6 +18,15 @@ Linear fit utils
     :undoc-members:
     :show-inheritance:
 
+Stats
+-----
+
+.. automodule:: bact_math_utils.stats
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
        
 Life time
 ---------
@@ -45,10 +54,11 @@ Tune utils
     :show-inheritance:
 
 
+
 Misc
 ----
 
-Or non numeric convienience functions
+Other non numeric convienience functions
 
 .. automodule:: bact_math_utils.misc
     :members:
