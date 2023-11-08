@@ -1,3 +1,11 @@
 """
 """
-__all__ = ["exp_fit", "life_time", "distorted_orbit", "linear_fit", "misc"]
+__all__ = [
+    "distorted_orbit",
+    "exp_fit",
+    "life_time",
+    "linear_fit",
+    "misc",
+    "stats",
+    "tune",
+]

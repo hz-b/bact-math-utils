@@ -47,7 +47,7 @@ def closed_orbit_kick(
         tune:   working point
         mu_i:   phase propagation of kicker
         beta_i: beta at the kicker
-        theta_i: kicker aangle
+        theta_i: kicker angle
 
     Returns: kick scaled by sqrt of beta and angle
 
@@ -109,8 +109,8 @@ def closed_orbit_distortion(
          \right)}
 
     """
-    devisor = 2.0 * np.sin(tune * np.pi)
-    scale = 1.0 / devisor
+    divisor = 2.0 * np.sin(tune * np.pi)
+    scale = 1.0 / divisor
 
     beta = np.asarray(beta)
     sq_beta = np.sqrt(beta)
