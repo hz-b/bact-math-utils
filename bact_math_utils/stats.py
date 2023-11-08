@@ -1,4 +1,4 @@
-"""Simple stat utils not provided by scikit-learn
+"""Simple stat utils not provided by numpy
 """
 import numpy as np
 
