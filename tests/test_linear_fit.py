@@ -6,7 +6,7 @@ import numpy as np
 def compute_cov(x):
     """Compute covariance for linear fit with independent x"""
     N = len(x)
-    X = np.ones((N, 2), np.float_)
+    X = np.ones((N, 2), float)
     X[:, 0] = x
 
     residues = 1

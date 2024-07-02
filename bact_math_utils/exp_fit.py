@@ -91,7 +91,7 @@ def scaled_exp_df(t, c0, tau, b=None, t0=None):
     dfs = [df_c0, df_dtau]
 
     if b is not None:
-        df_db = np.ones(df_c0.shape, dtype=np.float)
+        df_db = np.ones(df_c0.shape, dtype=float)
         dfs.append(df_db)
 
     if t0 is not None:

@@ -221,7 +221,7 @@ def beam_decay_fsdf(t, u, c0, tauG, b, c, offset):
     ys = scaled_exp(t, 1, tau)
 
     nu = len(u)
-    df = np.zeros((nu, 5), np.float_)
+    df = np.zeros((nu, 5), float)
 
     # Derviatives with respect to calculate_lifetime
     df_scale = -c0 * t / tau2 * ys

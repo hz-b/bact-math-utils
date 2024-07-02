@@ -59,7 +59,7 @@ def linear_fit_1d(x: np.ndarray, y: np.ndarray) -> (np.ndarray, np.ndarray):
 
     """
     N = len(x)
-    X = np.ones((N, 2), np.float_)
+    X = np.ones((N, 2), float)
     X[:, 0] = x
 
     p, residues, rank, s = linalg.lstsq(X, y)
