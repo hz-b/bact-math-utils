@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "bact-math-utils"
-version = "0.0.0"
+version = "0.1.0"
 description = "bact: math and non mathematical utils"
 authors = ["Pierre Schnizer", "Teresia Olsson"]
 license = "GPL-3.0"
