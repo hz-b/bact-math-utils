@@ -92,7 +92,7 @@ jobs:
         --repo '${{ github.repository }}'
 
   publish-to-testpypi:
-    name: Publish accml to TestPyPI
+    name: Publish bact-math-utils to TestPyPI
     needs:
     - build
     runs-on: ubuntu-latest
