@@ -55,7 +55,7 @@ class EnumerateUniqueEverSeen:
 class EnumerateUniqueJustSeen:
     """Return unique id's for the item and the item
 
-    Inspired by more_itertools.unique_lastseen.
+    Inspired by .
 
     Follows :func:`enumerate` API
 
@@ -127,6 +127,14 @@ def enumerate_changed_value_tuple(seq: Sequence) -> list:
     data = [cnt for cnt, val in mstep(zip(*seq))]
     return data
 
+
+def enumerate_same_value_tuple(seq: Sequence) -> list:
+    mstep = CountSame()
+    return [cnt for cnt, val in mstep(zip(*seq))]
+
+
+def enumerate_same_value_pairs(val1: Sequence, val2: Sequence) -> list:
+    return enumerate_same_value_tuple((val1, val2))
 
 def enumerate_changed_value_pairs(val1: Sequence, val2: Sequence) -> list:
     """Emit a new number every time one of the values changes
